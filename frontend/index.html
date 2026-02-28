@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SummarAI — Abstractive Text Summariser</title>
+  <meta name="description"
+    content="AI-powered abstractive text summariser using LSTM, Bahdanau Attention and BART transformer. Paste any article and get a concise summary instantly." />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+
+<body>
+
+  <!-- Animated mesh background -->
+  <div class="bg-mesh" aria-hidden="true">
+    <div class="orb orb-1"></div>
+    <div class="orb orb-2"></div>
+    <div class="orb orb-3"></div>
+  </div>
+
+  <!-- ============================  NAVBAR  ============================ -->
+  <nav>
+    <div class="nav-inner">
+      <div class="nav-brand">
+        <div class="nav-logo">✦</div>
+        <span class="nav-title">SummarAI</span>
+      </div>
+      <span class="nav-pill">
+        <span class="dot"></span>
+        NLP · LSTM · Attention
+      </span>
+    </div>
+  </nav>
+
+  <!-- ============================  MAIN  ============================ -->
+  <div class="container">
+
+    <!-- Hero -->
+    <header class="hero">
+      <div class="hero-tag">
+        <span class="spark">✦</span>
+        Seq2Seq + Bahdanau Attention
+      </div>
+
+      <h1>
+        <span class="gradient-text">Abstractive</span><br />
+        <span class="outline-text">Text&nbsp;</span><span class="gradient-text">Summariser</span>
+      </h1>
+
+      <p class="hero-desc">
+        Paste any article or paragraph and let our NLP model
+        generate a concise, human-readable abstract — not just extracted sentences.
+      </p>
+
+      <div class="hero-stats">
+        <div class="hero-stat">
+          <div class="val">BART</div>
+          <div class="lbl">Model</div>
+        </div>
+        <div class="hero-stat">
+          <div class="val">BLEU</div>
+          <div class="lbl">Evaluation</div>
+        </div>
+        <div class="hero-stat">
+          <div class="val">LSTM</div>
+          <div class="lbl">Architecture</div>
+        </div>
+      </div>
+    </header>
+
+    <!-- ====  INPUT CARD  ==== -->
+    <section class="card input-panel" id="input-card">
+
+      <div class="section-header">
+        <div class="section-label">
+          <span class="icon">📝</span>
+          Input Text
+        </div>
+        <div class="char-info">
+          Words: <span class="badge" id="word-count">0</span>
+        </div>
+      </div>
+
+      <textarea id="input-text" placeholder="Paste your article, news excerpt, or paragraph here (minimum 20 words)…"
+        aria-label="Input text to summarise" spellcheck="true"></textarea>
+
+      <!-- Settings sliders -->
+      <div class="settings-row">
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="name">Min Summary Length</span>
+            <span class="val-badge" id="min-val">30</span>
+          </div>
+          <input type="range" id="min-length" min="10" max="100" value="30"
+            aria-label="Minimum summary length in tokens" />
+        </div>
+        <div class="slider-item">
+          <div class="slider-header">
+            <span class="name">Max Summary Length</span>
+            <span class="val-badge" id="max-val">130</span>
+          </div>
+          <input type="range" id="max-length" min="30" max="300" value="130"
+            aria-label="Maximum summary length in tokens" />
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="submit-wrap">
+        <button id="btn-submit" class="btn-submit" type="button">
+          <div class="spinner" aria-hidden="true"></div>
+          <span class="btn-label">✦ &nbsp;Generate Summary</span>
+        </button>
+      </div>
+
+    </section>
+
+    <!-- ====  ERROR  ==== -->
+    <div id="error-section" class="error-wrap" role="alert">
+      <div class="card error-card">
+        <span class="err-icon">⚠</span>
+        <div>
+          <h4 id="error-title">Something went wrong</h4>
+          <p id="error-msg"></p>
+        </div>
+      </div>
+    </div>
+
+    <!-- ====  OUTPUT  ==== -->
+    <section id="output-section" class="output-wrap" aria-live="polite">
+      <div class="card output-card">
+
+        <div class="output-header">
+          <div class="output-label">
+            <div class="label-icon">✦</div>
+            <h3>Generated Summary</h3>
+          </div>
+          <button id="btn-copy" class="btn-copy" title="Copy summary to clipboard">
+            <span>⎘</span> Copy
+          </button>
+        </div>
+
+        <div class="summary-body">
+          <p id="summary-text"></p>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat-card">
+            <span class="stat-icon">📄</span>
+            <div class="stat-num" id="stat-input-wc">—</div>
+            <div class="stat-lbl">Input Words</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">✂️</span>
+            <div class="stat-num" id="stat-summary-wc">—</div>
+            <div class="stat-lbl">Summary Words</div>
+          </div>
+          <div class="stat-card">
+            <span class="stat-icon">📉</span>
+            <div class="stat-num" id="stat-compression">—</div>
+            <div class="stat-lbl">Compression</div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ====  ABOUT  ==== -->
+    <section class="about-section">
+      <h2 class="section-title">How It Works</h2>
+      <p class="section-sub">The NLP pipeline powering this summariser</p>
+
+      <div class="about-grid">
+        <article class="card about-card">
+          <div class="icon-wrap ic-purple">🧠</div>
+          <h3>Seq2Seq LSTM</h3>
+          <p>Stacked LSTM encoder-decoder trained on the CNN/DailyMail news dataset with teacher forcing.</p>
+        </article>
+
+        <article class="card about-card">
+          <div class="icon-wrap ic-cyan">🎯</div>
+          <h3>Bahdanau Attention</h3>
+          <p>Custom attention layer with W<sub>a</sub>, U<sub>a</sub>, V<sub>a</sub> weights lets the decoder focus on
+            relevant encoder states.</p>
+        </article>
+
+        <article class="card about-card">
+          <div class="icon-wrap ic-pink">⚡</div>
+          <h3>BART Transformer</h3>
+          <p><strong>DistilBART</strong> via Hugging Face Inference API delivers state-of-the-art abstractive summaries
+            in real time.</p>
+        </article>
+
+        <article class="card about-card">
+          <div class="icon-wrap ic-amber">📊</div>
+          <h3>BLEU Scoring</h3>
+          <p>Model accuracy evaluated using BLEU — the standard NLP metric for measuring generated text quality against
+            references.</p>
+        </article>
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <!-- Toast -->
+  <div id="toast" class="toast" role="status" aria-live="polite">
+    <span>✓</span>
+    <span class="toast-msg"></span>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <span>NLP Mini Project</span>
+      <span class="sep">·</span>
+      <span>Seq2Seq LSTM + Bahdanau Attention</span>
+      <span class="sep">·</span>
+      <a href="https://huggingface.co/sshleifer/distilbart-cnn-12-6" target="_blank" rel="noopener">DistilBART Model</a>
+    </div>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+
+</html>
