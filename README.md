@@ -12,13 +12,13 @@
   <a href="#features">Features</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#api-reference">API Reference</a>
-</p>
+
 
 ![UI Preview](https://img.shields.io/badge/UI-Glassmorphism-8b5cf6?style=flat-square)
 ![Backend](https://img.shields.io/badge/Backend-Flask-white?style=flat-square&logo=flask)
 ![Model](https://img.shields.io/badge/Model-DistilBART-orange?style=flat-square&logo=huggingface)
 ![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
-
+</p>
 ---
 
 ## About The Project
