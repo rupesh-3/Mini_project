@@ -1,46 +1,133 @@
-# Abstractive-Text-Summariser-With-NLP
+<h1 align="center">
+  <br>
+  ✦ SummarAI
+  <br>
+</h1>
 
-*Completed by: <br />
-  Nethra Viswanathan <br />
-  Brindha Mariappan <br />
-  Hemapriya Kishorevenkatram <br />*
+<h4 align="center">An Abstractive Text Summariser using NLP, LSTM, Bahdanau Attention, and BART.</h4>
 
-Text Summarization recapitulate the content available in articles, research paper, news, paragraph or a piece of information. Automatic Text Summarization is made possible in Natural Language Processing (NLP) by employing two types of summarization techniques viz., 1) Extractive Summarization and 2) Abstractive Summarization. Extractive summarization generates summary by extracting the verbatim from the original passage whereas Abstractive summarization generates summary either by paraphrasing or by using new words instead of extracting the main points. A comprehensive news article and summary dataset has been chosen from Kaggle and the latter method of summarisation is employed in our coursework which calls for an abstractive modelling approach using sequence to sequence Long Short-Term Memory (LSTM) model. BLEU scoring technique has been used for evaluating the accuracy of the model owing to the extensive usage of the same for many of the models involving Natural Language Processing.
+<p align="center">
+  <a href="#about-the-project">About The Project</a> •
+  <a href="#architecture">Architecture</a> •
+  <a href="#features">Features</a> •
+  <a href="#quick-start">Quick Start</a> •
+  <a href="#api-reference">API Reference</a>
+</p>
 
-## DELIVERED FILES:
-The model for text summarisation tool has been built and trained in Google Colab Pro which is a cloud
-based solution for executing machine learning algorithms with availability of GPUs. Hence a Colab
-notebook has been uploaded for execution from any system. The delivered zip file includes the
-following:
-1. Colab notebook “Abstractive_Text_Summariser.ipynb” to be executed in Google Colab since
-only the missing libraries in Google Colab have been included in the *pip install* commands.
-2. Two datasets – news_summary_more.csv which is the file used for training and validation and
-news_summary_test.csv which has the test data to be demonstrated on the day of demo. (*Please send a request to nethra.viswanathan@gmail.com for dataset*)
-3. Custom attention layer “attention.py” which is imported into the notebook
-4. The weights of the trained model “s2s_lstm_weights_adam.h5” for testing the model. (*Not provided here*)
-5. Figure “LossPlot.png” which is the plotted graph of training and validation loss stored as an
-image for retrieval.
-6. The text file “logswrite.txt” which has a record of the corpus and sentence wise BLEU score for a
-subset of data in the validation dataset.
-7. Environment file “environment.yml” for execution of code in local system if required.
+![UI Preview](https://img.shields.io/badge/UI-Glassmorphism-8b5cf6?style=flat-square)
+![Backend](https://img.shields.io/badge/Backend-Flask-white?style=flat-square&logo=flask)
+![Model](https://img.shields.io/badge/Model-DistilBART-orange?style=flat-square&logo=huggingface)
+![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
 
-## FILE PATH CONFIGURATION IN COLAB NOTEBOOK:
-The current folder path needs to be assigned to the environment variable “PROJECT_PATH” as a onetime setup.
+---
 
-## IMPORTING DATASET IN COLAB PRO:
-Dataset which is used for training the model needs to be placed in the drive and user needs to authorize
-access for the google colab pro to work with files in drive for which the mounting command is also
-provided in the notebook. Please enter the Google authorisation code to proceed with the execution
-without issues.
+## About The Project
 
-## EXECUTION OF CODE in COLAB/LOCAL SYSTEM:
-The code has been implemented in Google Colab Pro and hence it is recommended to execute the code
-in Google Colab Pro. This is because the packages used in code are already installed in Colab and hence
-exclusive installation statements are not provided as part of the notebook.
-If the code needs to be executed in local system for any reason, please create the environment using
-'environment.yml” file with the commands provided below before executing the notebook. The code has
-been implemented in Python 3.7.
+**SummarAI** is a Natural Language Processing (NLP) web application designed to generate high-quality, abstractive summaries of long text passages, articles, and documents. 
 
-conda env create --file environment.yml
-conda activate TextSummariser
+Unlike *extractive* summarisers which simply pull important sentences from the source text, an **abstractive** summariser understands the context and generates completely new, human-readable sentences — much like a human would summarise an article.
 
+This project originated as a Jupyter Notebook containing a custom-built, trained **Seq2Seq LSTM** model with **Bahdanau Attention**, evaluated using the **BLEU** metric. To provide reliable, production-ready, real-time inferences for the web application, the backend is powered by Hugging Face's **DistilBART** (`sshleifer/distilbart-cnn-12-6`) transformer model.
+
+---
+
+## Architecture
+
+The project is split into two distinct tiers connected via a REST API:
+
+1. **Frontend UI** 
+   * A modern, responsive "Glassmorphism" interface built with plain HTML, CSS (Grid/Flexbox), and Vanilla JavaScript.
+   * Features dynamic sliders, real-time token tracking, responsive loading states, and clipboard API integration.
+2. **Flask Backend**
+   * A lightweight Python HTTP server acting as a bridge between the frontend and the Hugging Face AI pipeline.
+   * Utilises smart retry logic (exponential backoff) to gracefully handle model cold-start (503) errors from the Inference API.
+
+---
+
+## Features
+
+- **Abstractive Summarisation**: Generates readable, coherent synopses using the DistilBART transformer.
+- **Customisable Length**: Dual sliders allow users to define exact minimum and maximum token lengths for the summary.
+- **Real-time Analytics**: Tracks input word count, output word count, and calculates the overall compression ratio.
+- **Sleek UI**: Interactive mesh gradients, soft glass animations, and a comfortable dark mode aesthetic.
+- **Resilient Backend**: Automatic recovery from Hugging Face cold-start API timeouts.
+
+---
+
+## Quick Start
+
+To run this application locally, you will need two separate terminal windows: one for the Flask backend, and one for the static frontend.
+
+### Prerequisites
+
+* Python 3.10+
+* A [Hugging Face User Access Token](https://huggingface.co/settings/tokens) (Free tier is sufficient)
+
+### 1. Setup the Backend
+
+```bash
+# Clone the repository
+git clone https://github.com/rupesh-3/Mini_project.git
+cd Mini_project/backend
+
+# Create a virtual environment and install dependencies
+python -m venv venv
+# On Windows: venv\Scripts\activate.ps1
+# On Mac/Linux: source venv/bin/activate
+pip install -r requirements.txt
+
+# Configure your Hugging Face Token
+cp .env.example .env
+# Open .env and replace 'your_hugging_face_token_here' with your actual token
+```
+
+### 2. Run the Servers
+
+**Terminal 1 (Backend):**
+```bash
+cd backend
+python app.py
+# Runs on http://localhost:5000
+```
+
+**Terminal 2 (Frontend):**
+```bash
+cd frontend
+python -m http.server 8080
+# Runs on http://localhost:8080
+```
+
+Once both servers are running, simply open your browser and navigate to `http://localhost:8080`.
+
+---
+
+## API Reference
+
+The backend exposes a single POST endpoint for summarisation.
+
+### `POST /api/summarize`
+
+**Payload:**
+```json
+{
+  "text": "The long article text goes here...",
+  "min_length": 30,
+  "max_length": 130
+}
+```
+
+**Response (200 OK):**
+```json
+{
+  "compression_ratio": 47.1,
+  "input_word_count": 51,
+  "model": "sshleifer/distilbart-cnn-12-6",
+  "summary": "Python is a high-level programming language...",
+  "summary_word_count": 27
+}
+```
+
+## Credits
+
+- Model Architecture based on Seq2Seq LSTM with Bahdanau (Additive) Attention
+- Transformer inference provided by [Hugging Face](https://huggingface.co/) `sshleifer/distilbart-cnn-12-6`
