@@ -12,16 +12,15 @@
   <a href="#features">Features</a> •
   <a href="#quick-start">Quick Start</a> •
   <a href="#api-reference">API Reference</a>
-  <a![UI Preview](https://img.shields.io/badge/UI-Glassmorphism-8b5cf6?style=flat-square)</a>
-  <a![Backend](https://img.shields.io/badge/Backend-Flask-white?style=flat-square&logo=flask)</a>
-  <a![Model](https://img.shields.io/badge/Model-DistilBART-orange?style=flat-square&logo=huggingface)</a>
-  <a![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)</a>
 </p>
 
-![UI Preview](https://img.shields.io/badge/UI-Glassmorphism-8b5cf6?style=flat-square)
-![Backend](https://img.shields.io/badge/Backend-Flask-white?style=flat-square&logo=flask)
-![Model](https://img.shields.io/badge/Model-DistilBART-orange?style=flat-square&logo=huggingface)
-![Python](https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python)
+<p align="center">
+  <img src="https://img.shields.io/badge/UI-Glassmorphism-8b5cf6?style=flat-square" alt="UI" />
+  <img src="https://img.shields.io/badge/Backend-Flask-white?style=flat-square&logo=flask" alt="Backend" />
+  <img src="https://img.shields.io/badge/Model-DistilBART-orange?style=flat-square&logo=huggingface" alt="Model" />
+  <img src="https://img.shields.io/badge/Python-3.10+-blue?style=flat-square&logo=python" alt="Python" />
+</p>
+
 
 ---
 
